@@ -1,12 +1,13 @@
-import React from "react";
-import SignUpForm from './components/SignUp/SignUpForm';
-import "bootstrap/dist/css/bootstrap.min.css";
+import Auth from "./components/Auth/Auth";
+import { Routes, Route } from 'react-router-dom';
+import Home from "./components/Home/Home";
 
 function App() {
   return (
-    <div className="App">
-      <SignUpForm />
-    </div>
+    <Routes>
+      <Route path="/" element={ <Auth/>} />
+      <Route path="/Home" element={<Home />} />
+    </Routes>
   );
 }
 
