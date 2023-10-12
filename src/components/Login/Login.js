@@ -9,20 +9,20 @@ import { useRef } from 'react';
 import { useNavigate } from 'react-router';
 
 export default function Login(props) {
-const navigate=useNavigate();
- const inputEmail=useRef();
- const inputPass=useRef();
- const [showPassword, setShowPassword] = useState(false);
+  const navigate=useNavigate();
+  const inputEmail=useRef();
+  const inputPass=useRef();
+  const [showPassword, setShowPassword] = useState(false);
 
- const Loginhandler = async (e) => {
-  e.preventDefault();
-  props.showModal(true);
-  let userLog = {
-    email: inputEmail.current.value,
-    password: inputPass.current.value,
-  };
-  let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA6ZQMh65aLPwZf_JsFpG8DjReEVoI_ndQ"; 
-  if(inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
+  const Loginhandler = async (e) => {
+    e.preventDefault();
+    props.showModal(true);
+    let userLog = {
+      email: inputEmail.current.value,
+      password: inputPass.current.value,
+    };
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyA6ZQMh65aLPwZf_JsFpG8DjReEVoI_ndQ"; 
+    if(inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
     {
       try {
         const response = await fetch(url, {
@@ -38,11 +38,14 @@ const navigate=useNavigate();
           localStorage.setItem("idToken",data.idToken);
           localStorage.setItem("email",data.email);
           toast.success("Logged in successfully");
-        } else {
+          navigate("/Home");
+        } 
+        else {
           const errorData = await response.json();
           console.log("Failed to login:", errorData);
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.log("Failed to login:", error);
       }
       inputEmail.current.value = '';
@@ -54,8 +57,7 @@ const navigate=useNavigate();
       props.showModal(false);
     }
     props.showModal(false);
-    navigate("/Home");
-};
+  };
 
   return (
     <div>
@@ -72,13 +74,13 @@ const navigate=useNavigate();
             <Form.Control ref={inputPass}  type={showPassword ? "text" : "password"} placeholder="Password" className="form-control-custom Login-inputbg" />
           </Form.Group>
           <Form.Check
-    className="Login-show-password"
-    type="checkbox"
-    label="Show Password"
-    onChange={() => setShowPassword((prevShow) => !prevShow)}
-  />
+            className="Login-show-password"
+            type="checkbox"
+            label="Show Password"
+            onChange={() => setShowPassword((prevShow) => !prevShow)}
+          />
           <Button className='w-100 Login-font-weight' variant="primary" type="submit">
-          Log in
+            Log in
           </Button>
         </Form>
         <span className='Login-haveaccount Login-font-weight' onClick={()=>{props.login()}}> Don't have an acccount / Sign up </span>
@@ -86,4 +88,4 @@ const navigate=useNavigate();
       <ToastContainer />  
     </div>
   );
-}
+};

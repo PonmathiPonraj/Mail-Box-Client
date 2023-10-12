@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
@@ -8,20 +7,20 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useRef } from 'react';
 
 export default function SignUp(props) {
+  const inputEmail=useRef();
+  const inputPass=useRef();
+  const inputConfirmPass=useRef();
 
- const inputEmail=useRef();
- const inputPass=useRef();
- const inputConfirmPass=useRef();
+  const SignUphandler = async (e) => {
+    e.preventDefault();
+    props.showModal(true);
+    let userLog = {
+      email: inputEmail.current.value,
+      password: inputPass.current.value,
+    };
 
- const SignUphandler = async (e) => {
-  e.preventDefault();
-  props.showModal(true);
-  let userLog = {
-    email: inputEmail.current.value,
-    password: inputPass.current.value,
-  };
-  let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA6ZQMh65aLPwZf_JsFpG8DjReEVoI_ndQ"; // Replace with your Firebase API key
-  if(inputPass.current.value===inputConfirmPass.current.value && inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA6ZQMh65aLPwZf_JsFpG8DjReEVoI_ndQ"; // Replace with your Firebase API key
+    if(inputPass.current.value===inputConfirmPass.current.value && inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
     {
       try {
         const response = await fetch(url, {
@@ -34,18 +33,18 @@ export default function SignUp(props) {
         if (response.ok) {
           const data = await response.json();
           console.log("User ID creation successful:", data);
-        } else {
+        } 
+        else {
           const errorData = await response.json();
           console.log("Error creating user ID:", errorData);
         }
-      } catch (error) {
+      } 
+      catch (error) {
         console.log("Error creating user ID:", error);
       }
-
       inputEmail.current.value = '';
       inputPass.current.value = '';
       inputConfirmPass.current.value = '';
-
     }
     else
     {
@@ -53,9 +52,7 @@ export default function SignUp(props) {
       props.showModal(false);
     }
     props.showModal(false);
-};
-
-
+  };
 
   return (
     <div>
@@ -85,4 +82,4 @@ export default function SignUp(props) {
     </div>
 
   );
-}
+};
