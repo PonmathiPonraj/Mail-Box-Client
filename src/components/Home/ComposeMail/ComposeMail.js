@@ -37,7 +37,6 @@ const ComposeMail = (props) => {
             subject: subject.current.value,
             mail: plainText,
             read: false,
-            unread: true,
             starred: false,
             time: props.time,
             send: true,
@@ -54,7 +53,7 @@ const ComposeMail = (props) => {
         .then(data => {
             // Handle success if needed
             console.log("Mail stored in Firebase:", data);
-            toast.success("Mail sent successfully");
+            dispatch(mailAction.addMail(mail));
         })
         .catch(error => {
             // Handle error if needed
