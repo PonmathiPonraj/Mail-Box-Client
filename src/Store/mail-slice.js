@@ -4,6 +4,7 @@ const mailSlice = createSlice({
     name: "mail",
     initialState: {
         allMails: [],
+        unreadMails:[],
         sentMails:[],
         deletedMails:[],
     },
