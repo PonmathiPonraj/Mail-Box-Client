@@ -1,17 +1,20 @@
-import React, { useRef, useState } from "react";
-import "./ComposeMail.module.css";
+import React, { useRef, useState } from 'react';
+import './ComposeMail.module.css';
 import { ToastContainer, toast } from 'react-toastify';
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { EditorState,convertToRaw } from "draft-js";
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { EditorState, convertToRaw } from 'draft-js';
+import { mailAction } from '../../../Store/mail-slice';
+import { useDispatch } from 'react-redux';
 
 const ComposeMail = (props) => {
     const [editorState, setEditorState] = useState(() =>
         EditorState.createEmpty()
     );
-    const [vis,setVisible]=useState(false);
-    const reciver=useRef();
-    const subject=useRef();
+    const [vis,setVisible] = useState(false);
+    const reciver = useRef();
+    const subject = useRef();
+    const dispatch = useDispatch();
     const onEditorStateChange = (newEditorState) => {
         setEditorState(newEditorState);
         if(editorState)
@@ -19,28 +22,28 @@ const ComposeMail = (props) => {
             setVisible(true);
         }
     };
-    const mailHandler=()=>{
+    const mailHandler = () => {
         const contentState = editorState.getCurrentContent();
         const rawContentState = convertToRaw(contentState);
         const plainText = rawContentState.blocks
         .map((block) => block.text.trim())
         .filter(Boolean)
         .join('\n');
-        let sender=localStorage.getItem("email");
-        let mail={
+        let sender = localStorage.getItem("email");
+        let mail = {
             sender,
-            reciver:reciver.current.value,
-            subject:subject.current.value,
-            mail:plainText,
-            read:false,
-            unread:true,
-            starred:false,
-            time:props.time,
-            send:true,
-            receive:false
+            reciver: reciver.current.value,
+            subject: subject.current.value,
+            mail: plainText,
+            read: false,
+            unread: true,
+            starred: false,
+            time: props.time,
+            send: true,
+            receive: false
         }
-        console.log(mail);
         toast.success("Mail sent successfully");
+        dispatch(mailAction.addMail(mail));
         setEditorState("");
     }
 

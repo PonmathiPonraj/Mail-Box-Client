@@ -155,6 +155,11 @@
     border-radius: 2px;
 }
 
+.user-img {
+    width: 50px;
+    border-radius: 25px;
+}
+
 .shortcut span {
     margin:0px 3px;
     padding: 4px 2px;
@@ -258,6 +263,18 @@
 
 }
 
+.logout {
+    background-color: white;
+    font-weight: 500;
+    padding: 5px 15px;
+    border-radius: 4px;
+    border:none;
+}
+
+.bg-light {
+    background-color: white !important;
+}
+
 .description-mail-list {
     display: inline-block;
     width: 150px; /* Adjust the width as needed */
@@ -273,9 +290,29 @@
     font-weight: 500;
 }
 
+.font-reducer {
+    font-size: 1rem;
+}
+
 @media (max-width:768px) {
     .disp {
         display: block;
+    }
+
+    .font-reducer {
+        overflow-x: scroll;
+    }
+
+    .search-cantrol {
+        display: none;
+    }
+
+    .description-mail-list {
+        display: none;
+    }
+
+    .bullet,.star,.starred {
+        display: none;
     }
 
     .menu {
@@ -283,6 +320,10 @@
         top: 0px;
         max-height: 100vh;
         overflow-y: scroll;
+    }
+
+    .menu-disp {
+        display: none;
     }
 
     .mail-main {
