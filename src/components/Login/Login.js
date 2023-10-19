@@ -21,7 +21,7 @@ export default function Login(props) {
       email: inputEmail.current.value,
       password: inputPass.current.value,
     };
-    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyCgl1Kkkaw7_gJny8ISnqxhFean3l_05B8"; 
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyB4mcS-F5h8tJYVTPw1pFJM93TgPV1YzQ8"; 
     if(inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
     {
       try {

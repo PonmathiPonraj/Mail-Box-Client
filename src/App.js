@@ -12,7 +12,7 @@ function App() {
     if(isInitialRef.current)
     {
       isInitialRef.current = false;
-      fetch("https://mail-af7f5-default-rtdb.firebaseio.com/mail.json")
+      fetch("https://mail-box-ca50f-default-rtdb.firebaseio.com/mail.json")
       .then((response)=>{if(!response){ throw new Error("Network issue"); }return response.json();})
       .then((mailData)=>{
         if(mailData)
@@ -33,7 +33,7 @@ function App() {
         })
         return;
     }
-  },[]);
+  },[dispatch]);
   return (
     <Routes>
       <Route path="/" element={ <Auth/>} />

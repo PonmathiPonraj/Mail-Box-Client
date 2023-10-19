@@ -6,40 +6,39 @@ import { BiArchiveIn } from "react-icons/bi";
 import { FiMoreVertical } from "react-icons/fi";
 import { GoMoveToEnd } from "react-icons/go";
 import { MdOutlineAddTask } from "react-icons/md";
+import { AiOutlineStar } from "react-icons/ai";
 import { FaOpencart } from "react-icons/fa";
 import { AiFillDelete, AiOutlineClockCircle } from "react-icons/ai";
-import folder from "../../Assets/folder.jpg";
-import photos from "../../Assets/photos.jpg";
-import docs from "../../Assets/document.jpg";
-import travel from "../../Assets/travel.png";
-import subs from "../../Assets/subs.png";
-import deals from "../../Assets/deals.jpg";
-import view from "../../Assets/view.png";
-import user from "../../Assets/user.jpg";
+// import folder from "../../Assets/folder.jpg";
+// import photos from "../../Assets/photos.jpg";
+// import docs from "../../Assets/document.jpg";
+// import travel from "../../Assets/travel.png";
+// import subs from "../../Assets/subs.png";
+// import deals from "../../Assets/deals.jpg";
+// import view from "../../Assets/view.png";
+// import user from "../../Assets/user.jpg";
 import ComposeMail from "./ComposeMail/ComposeMail";
 import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { mailAction } from "../../Store/mail-slice";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 const Home = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [activeListItem, setActiveListItem] = useState("Inbox");
-  const [isStarred, setIsStarred] = useState(false);
   const [iscompose, setCompose] = useState(false);
   const [readmoode, setReadMode] = useState(false);
   const [readmoodeValue, setReadModeValue] = useState("");
+  const [showModal, setShowModal] = useState(false);
   const currentDate = new Date();
   const sentMails = useSelector((state) => state.mail.sentMails);
   const allMails = useSelector((state) => state.mail.allMails);
   const unreadMails = useSelector((state) => state.mail.unreadMails);
   const deletedMails = useSelector((state) => state.mail.deletedMails);
   const [temp, setTemp] = useState([]);
-  useEffect(()=>{
+  useEffect(() => {
     setTemp(allMails);
   },[allMails]);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const composehandle = (value) => {
     setCompose(value);
@@ -63,9 +62,6 @@ const Home = () => {
   // Get the formatted time and date
   const formattedTime = formatTime(currentDate);
   const formattedDate = formatDate(currentDate);
-  const toggleStar = () => {
-    setIsStarred((prevIsStarred) => !prevIsStarred);
-  };
   const handleItemClick = (item) => {
     setActiveListItem(item);
     setReadMode(false);
@@ -100,8 +96,8 @@ const Home = () => {
       unread:false
     }
     if(value.sender!==localStorage.getItem("email"))
-    {
-      fetch(`https://mail-af7f5-default-rtdb.firebaseio.com/mail/${value.mailId}.json`,{
+    { setShowModal(true);
+      fetch(`https://mail-box-ca50f-default-rtdb.firebaseio.com/mail/${value.mailId}.json`,{
         method:"PUT",
         header:{
           'Content-Type':"application/json"
@@ -121,6 +117,7 @@ const Home = () => {
       .catch(error=>{
         console.log(error);
       })
+      setShowModal(false);
     }
   }
   const logoutHandler = () => {
@@ -129,6 +126,7 @@ const Home = () => {
     navigate("/");
   }
   const deleteHandler = (value) => {
+    setShowModal(true);
     fetch(`https://mail-af7f5-default-rtdb.firebaseio.com/mail/${value.mailId}.json`,{
       method:"DELETE",
     }).then((response)=>{
@@ -254,14 +252,14 @@ const Home = () => {
               onClick={toggleAccordion}
             >
               <button className="accor-button mt-2 font-weight">
-                <img src={view} alt="xyz-damaged" className="img-style" />
+                {/* <img src={view} alt="xyz-damaged" className="img-style" /> */}
                 Views
               </button>
               <div
                 className="panel"
                 style={{ display: isActive ? "block" : "none" }}
               >
-                <ul className="menu-list font-weight mt-1">
+                {/* <ul className="menu-list font-weight mt-1">
                   <li class="">
                     {" "}
                     <img src={photos} alt="xyz-damaged" className="img-style" />
@@ -286,7 +284,7 @@ const Home = () => {
                     <img src={travel} alt="xyz-damaged" className="img-style" />
                     Travels
                   </li>
-                </ul>
+                </ul> */}
               </div>
             </div>
             {/* 2nd accordian  */}
@@ -295,7 +293,7 @@ const Home = () => {
               onClick={toggleAccordion}
             >
               <button className="accor-button mt-2 font-weight">
-                <img src={folder} alt="xyz-damaged" className="img-style" />{" "}
+                {/* <img src={folder} alt="xyz-damaged" className="img-style" />{" "} */}
                 Folder
               </button>
               <div
@@ -310,7 +308,7 @@ const Home = () => {
           </section>
           {!readmoode && (
             <section className="bg-light list col-lg-10 col-md-12 rad">
-              <div className="mail-list-header d-flex align-items-center justify-content-between p-2 border-bottom overflow-x-auto">
+              <div className="mail-list-header d-flex align-items-center justify-content-between pt-1 pb-1 border-bottom overflow-x-auto">
                 <div>
                   <input
                     type="checkbox"
@@ -336,7 +334,10 @@ const Home = () => {
               {/* Mail Listes   the main mail */}
               <div className="mail-lists">
                 {temp.length === 0 ? (
-                  <h3>No Mails available</h3>
+                  <div className="d-flex justify-content-center align-items-center flex-column">
+                    {/* <img src={pick} alt="picka"  className="img-picka" /> */}
+                    <h3> No {activeListItem} mail available</h3>
+                  </div>
                 ) : (
                   <ul>
                     {temp.map((value) => (
@@ -344,7 +345,7 @@ const Home = () => {
                         <input type="checkbox" name="Select" id="Select" />
                         {!value.delete&& !value.read &&<span className="bullet"></span>}
                         <span>{value.name}</span>
-                        <span className={isStarred ? "starred" : "star"} title="Mark as starred" onClick={toggleStar}></span>
+                        <AiOutlineStar/>
                         <span className="title-mail-list">
                           {value.subject}
                         </span>
@@ -365,32 +366,32 @@ const Home = () => {
           {readmoode &&<section className="bg-light list col-lg-10 col-md-12">
             <div className="mail-list-header d-flex align-items-center justify-content-between p-2 border-bottom ">
               <div className="mail-readmode-header">
-                <span onClick={readmodeHandler}>
-                  <FcUpLeft />
+                <span onClick={readmodeHandler} title="Back">
+                  <FcUpLeft size="1.3rem" />
                 </span>
-                <span>
-                  <BiArchiveIn />
+                <span title="Archive">
+                  <BiArchiveIn size="1.3rem" />
                 </span>
-                <span>
-                  <RiSpam2Line />
+                <span title="Spam">
+                  <RiSpam2Line size="1.3rem" />
                 </span>
-                <span onClick={()=>{deleteHandler(readmoodeValue)}}>
-                  <AiFillDelete />
+                <span onClick={()=>{deleteHandler(readmoodeValue)}} title="Delete">
+                  <AiFillDelete size="1.3rem"/>
                 </span>
-                <span>
-                  <RiMessage2Fill />
+                <span title="Message">
+                  <RiMessage2Fill size="1.3rem"/>
                 </span>
-                <span>
-                  <AiOutlineClockCircle />
+                <span title="Click">
+                  <AiOutlineClockCircle size="1.3rem"/>
                 </span>
-                <span>
-                  <MdOutlineAddTask />
+                <span title="Add to task">
+                  <MdOutlineAddTask size="1.3rem"/>
                 </span>
-                <span>
-                  <GoMoveToEnd />
+                <span title="Move to End">
+                  <GoMoveToEnd size="1.3rem"/>
                 </span>
-                <span>
-                  <FiMoreVertical />
+                <span title="More...">
+                  <FiMoreVertical size="1.3rem"/>
                 </span>
               </div>
 
@@ -410,13 +411,13 @@ const Home = () => {
                 </div>
                 <div className="mail-readmode-header">
                   <span title="Print">Print</span>
-                  <span title="open in new window"><FaOpencart/></span>
+                  <span title="open in new window"><FaOpencart size="1.3rem"/></span>
                 </div>
               </div>
 
               <div className="mail-list-header p-3 font-weight d-flex flex-row justify-content-start">
 
-                <img src={user} alt="xyz-damaged" className="user-img" />
+                {/* <img src={user} alt="xyz-damaged" className="user-img" /> */}
 
                 <span className="w-100">
                   <div className="d-flex align-items-center justify-content-between">
@@ -443,6 +444,11 @@ const Home = () => {
           time={formattedDate + " " + formattedTime}
         />
       )}
+      {showModal && 
+        <div className='Auth-load-modal'>
+          <div class="Auth-loader"></div>
+        </div>
+      }
     </div>
   );
 };

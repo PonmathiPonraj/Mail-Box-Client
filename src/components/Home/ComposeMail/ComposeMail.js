@@ -42,7 +42,7 @@ const ComposeMail = (props) => {
             send: true,
             receive: false
         }
-        fetch('https://mail-af7f5-default-rtdb.firebaseio.com/mail.json', {
+        fetch('https://mail-box-ca50f-default-rtdb.firebaseio.com/mail.json', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

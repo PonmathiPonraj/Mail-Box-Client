@@ -19,7 +19,7 @@ export default function SignUp(props) {
       password: inputPass.current.value,
     };
 
-    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyA6ZQMh65aLPwZf_JsFpG8DjReEVoI_ndQ"; // Replace with your Firebase API key
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyB4mcS-F5h8tJYVTPw1pFJM93TgPV1YzQ8"; // Replace with your Firebase API key
     if(inputPass.current.value===inputConfirmPass.current.value && inputPass.current.value !== "" && inputEmail.current.value.indexOf("@"))
     {
       try {
